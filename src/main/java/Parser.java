@@ -1,10 +1,9 @@
+import javax.swing.plaf.synth.SynthRadioButtonMenuItemUI;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Paweł Matyaszczyk
@@ -53,6 +52,39 @@ public class Parser {
         }
 
         return realEstateList;
+    }
+
+    public Map<String, List<RealEstate>> groupByCity(List<RealEstate> realEstates){
+        Map<String, List<RealEstate>> map = new HashMap<>();
+        for(RealEstate realEstate : realEstates){
+            if( map.containsKey(realEstate.getCity())){
+                List<RealEstate> list;
+                list = map.get(realEstate.getCity());
+                list.add(realEstate);
+                map.put(realEstate.getCity(), list);
+            } else {
+                List<RealEstate> list = new ArrayList<>();
+                list.add(realEstate);
+                map.put(realEstate.getCity(), list);
+            }
+        }
+        return map;
+
+    }
+
+    public Map<String,Integer> countByCity(List<RealEstate> realEstates) {
+        Map<String,Integer> cityMap = new HashMap<>();
+        for (RealEstate house:realEstates) {
+            if (cityMap.containsKey(house.getCity())) {
+                cityMap.put(house.getCity(),cityMap.get(house.getCity())+1);
+            }
+            else {
+                cityMap.put(house.getCity(),1);
+            }
+
+        }
+
+        return cityMap;
     }
 
 }
